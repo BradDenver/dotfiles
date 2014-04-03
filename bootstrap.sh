@@ -129,6 +129,12 @@ if [ ! -d $HOME/.vim/tmp ]; then
   notice "made $HOME/.vim/tmp"
 fi
 
+if [ ! -d $HOME/.vim/bundle ]; then
+  mkdir -p $HOME/.vim/bundle
+  git submodule add -f http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+  notice "made $HOME/.vim/bundle and added vundle submodule"
+fi
+
 #-----------------------------------------------------------------------------
 # Finished
 #-----------------------------------------------------------------------------

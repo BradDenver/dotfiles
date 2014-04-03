@@ -65,7 +65,8 @@ in_array() {
 
 backupdir="$HOME/.dotfiles-backup/$(date "+%Y%m%d%H%M.%S")"
 dependencies=(git hg vim)
-excluded=(. .. .git .gitignore .gitmodules bootstrap.sh Gemfile Gemfile.lock Rakefile README.md)
+# .vim is excluded so that swp files, vundle etc are not lost
+excluded=(. .. .git .gitignore .gitmodules bootstrap.sh Gemfile Gemfile.lock Rakefile README.md .vim)
 
 
 #-----------------------------------------------------------------------------
@@ -111,7 +112,7 @@ if [ -d $HOME/dotfiles ]; then
 else
   # Clone Repo
   notice "Downloading"
-  git clone --recursive https://github.com/BradDenver/dotfiles.git $HOME/.dotfiles
+  git clone --recursive https://github.com/BradDenver/dotfiles.git $HOME/dotfiles
 
   pushd $HOME/dotfiles
 
@@ -124,16 +125,21 @@ else
   install
 fi
 
-if [ ! -d $HOME/.vim/tmp ]; then
-  mkdir -p $HOME/.vim/tmp
-  notice "made $HOME/.vim/tmp"
+# ensure we have the required .vim dirs as they are not copied from repo
+mkdir -p $HOME/.vim/tmp
+mkdir -p $HOME/.vim/bundle
+notice "vim folders created (if not present already)"
+
+# install vundle if not already there
+if [ ! -d $HOME/.vim/bundle/vundle ]; then
+  git clone https://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle
+  notice "made $HOME/.vim/bundle/vundle and cloned vundle"
 fi
 
-if [ ! -d $HOME/.vim/bundle ]; then
-  mkdir -p $HOME/.vim/bundle
-  git submodule add -f http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-  notice "made $HOME/.vim/bundle and added vundle submodule"
-fi
+# install plugins via vundle
+vim +PluginInstall +qall
+notice "vim plugins installed via vundle"
+
 
 #-----------------------------------------------------------------------------
 # Finished

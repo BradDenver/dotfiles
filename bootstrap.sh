@@ -124,6 +124,10 @@ else
   install
 fi
 
+if [ ! -d $HOME/.vim/tmp ]; then
+  mkdir -p $HOME/.vim/tmp
+  notice "made $HOME/.vim/tmp"
+fi
 
 #-----------------------------------------------------------------------------
 # Finished

@@ -91,9 +91,9 @@ fi
 # Install
 #-----------------------------------------------------------------------------
 
-# Assumes $HOME/.dotfiles is *ours*
-if [ -d $HOME/.dotfiles ]; then
-  pushd $HOME/.dotfiles
+# Assumes $HOME/dotfiles is *ours*
+if [ -d $HOME/dotfiles ]; then
+  pushd $HOME/dotfiles
 
   # Update Repo
   notice "Updating"
@@ -111,9 +111,9 @@ if [ -d $HOME/.dotfiles ]; then
 else
   # Clone Repo
   notice "Downloading"
-  git clone --recursive git://github.com/BradDenver/dotfiles.git $HOME/.dotfiles
+  git clone --recursive https://github.com/BradDenver/dotfiles.git $HOME/.dotfiles
 
-  pushd $HOME/.dotfiles
+  pushd $HOME/dotfiles
 
   # Backup
   notice "Backup up old files ($backupdir)"

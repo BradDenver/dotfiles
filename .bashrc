@@ -4,7 +4,7 @@
 PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\$ '
 
 # set z.sh - https://github.com/rupa/z
-. $HOME/vendor/z.sh
+. $HOME/z/z.sh
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then

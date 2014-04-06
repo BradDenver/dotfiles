@@ -25,6 +25,9 @@ shopt -s nocaseglob
 # Autocorrect typos in path names when using `cd`
 shopt -s cdspell
 
+# make all completions case insensitive
+bind 'set completion-ignore-case on'
+
 # User specific aliases and functions
 
 

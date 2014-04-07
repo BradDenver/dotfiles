@@ -108,6 +108,7 @@ let user_emmet_expandabbr_key='<C-e>'
 let NERDTreeMinimalUI=1
 let NERDTreeMouseMode=2
 let NERDTreeShowHidden=1
+let NERDTreeIgnore=['\.svn$']
 let g:UltiSnipsSnippetDirectories = ['UltiSnips', 'snippets']
 let Tlist_Show_One_File=1
 

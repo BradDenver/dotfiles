@@ -36,3 +36,12 @@ function c() {
     esac
   done
 }
+
+# http://tilvim.com/2013/05/02/g-function.html
+function g {
+  if [[ $# > 0 ]]; then
+    git $@
+  else
+    git status
+  fi
+}

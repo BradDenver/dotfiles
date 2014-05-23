@@ -39,3 +39,5 @@ function g {
     git status
   fi
 }
+
+alias codecept="./vendor/bin/codecept"

@@ -25,7 +25,9 @@ Bundle 'scrooloose/nerdtree'
 "Bundle 'tpope/vim-dispatch'
 Bundle 'godlygeek/tabular'
 Bundle 'taglist.vim'
-"Bundle 'Valloric/YouCompleteMe'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'marijnh/tern_for_vim'
+Bundle 'mhinz/vim-startify'
 
 " Syntax
 Bundle 'pangloss/vim-javascript'
@@ -100,7 +102,7 @@ nmap <leader>w <C-W>
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#enabled = 1
-"let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 1
 let g:airline_theme='base16'
 let g:airline#extensions#tabline#show_buffers = 0
 

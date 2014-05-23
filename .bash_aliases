@@ -4,18 +4,12 @@ alias l='ls -Al'
 
 alias ..='cd ../'
 
-# on CentOS you need to alias cmake to cmake28
-CMAKE=/bin/false
-if [ "`cmake --version | cut -d" " -f3 | cut -c1-3`" = "2.8" ]
-then 
-  CMAKE="/usr/bin/cmake"
-else 
-  if [ -f /usr/bin/cmake28 ]
-  then
-    CMAKE="/usr/bin/cmake28"
-  fi
-fi
-alias cmake="$CMAKE"
+# force tmux to use the $TERM env var 
+# which is set in .bashrc
+alias tmux="tmux -2"
+
+
+# FUNCTIONS
 
 # Create a new directory and enter it
 function md() {

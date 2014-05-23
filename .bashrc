@@ -28,6 +28,9 @@ shopt -s cdspell
 # make all completions case insensitive
 bind 'set completion-ignore-case on'
 
+# we want tmux to use 256 colors
+export TERM="screen-256color"
+
 # User specific aliases and functions
 
 

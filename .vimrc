@@ -18,7 +18,8 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/nerdtree'
 "Bundle 'SirVer/ultisnips'
 "Bundle 'tpope/vim-surround'
-"Bundle 'scrooloose/syntastic'
+Bundle 'scrooloose/syntastic'
+Bundle 'scrooloose/nerdcommenter'
 "Bundle 'tomtom/tcomment_vim'
 "Bundle 'tpope/vim-abolish'
 "Bundle 'mattn/emmet-vim'
@@ -58,6 +59,9 @@ colorscheme solarized
 
 au WinLeave * set nocursorline
 au WinEnter * set cursorline
+
+" recognize .md files as markdown
+au BufRead,BufNewFile *.md set filetype=markdown
 
 set cursorline
 hi CursorLineNR cterm=bold, ctermfg=2

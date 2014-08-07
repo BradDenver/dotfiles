@@ -40,4 +40,13 @@ function g {
   fi
 }
 
+
+function s {
+  if [[ $# > 0 ]]; then
+    svn $@
+  else
+    svn status
+  fi
+}
+
 alias codecept="./vendor/bin/codecept"

@@ -1,0 +1,99 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-ajax/core-ajax.html">
+
+<!--
+An element to retrieve and display the readme for any GitHub repository.
+
+Please note this element has not been endorsed by GitHub.
+
+Styling thanks to [github-markdown-css](https://github.com/sindresorhus/github-markdown-css). 
+
+##### Example
+
+    <github-readme user="BradDenver" repo="Preen"></github-readme>
+
+@element github-readme
+@blurb An element to retrieve and display the readme for any GitHub repository
+@homepage http://BradDenver.github.io/github-readme
+-->
+<polymer-element name="github-readme" attributes="auto user repo">
+
+  <template>
+
+    <link rel="stylesheet" href="../github-markdown-css/github-markdown.css" />
+
+    <content></content>
+
+    <core-ajax 
+      id="ajaxer" 
+      auto="{{auto}}"
+      headers='{"Accept": "application/vnd.github.VERSION.html"}'
+      url="{{readmeUrl}}" 
+      on-core-response="{{ajaxResponseHandler}}">
+    </core-ajax>
+
+    <div id="responseDiv" class="markdown-body">{{responseBody}}</div>
+
+  </template>
+
+  <script>
+
+    Polymer('github-readme', {
+      
+      /**
+       * The GitHub username for the repo.
+       *
+       * @attribute user
+       * @type string
+       */
+       user: '',
+
+      /**
+       * The GitHub repository name to get the readme from.
+       *
+       * @attribute repo
+       * @type string
+       */
+      repo: '',
+
+      /**
+       * If true, automatically performs an Ajax request for the readme when the user and repo changes.
+       *
+       * @attribute auto
+       * @type bool
+       * @default false
+       */
+      auto: false,
+
+      ready: function() {
+        //this.readmeUrl = 'https://api.github.com/repos/' + this.user + '/' + this.repo + '/readme';
+      },
+
+      observe: {
+        user: 'setUrl',
+        repo: 'setUrl'
+      },
+
+      setUrl: function() {
+        this.readmeUrl = 'https://api.github.com/repos/' + this.user + '/' + this.repo + '/readme';
+      },
+
+      
+      /**
+       * The `go` method calls the go method of the internal core-ajax element that retrieves the readme content.
+       *
+       * @method go
+       */
+      go: function() {
+        this.$.ajaxer.go();
+      },
+
+      ajaxResponseHandler: function(e) {
+        this.$.responseDiv.innerHTML = e.detail.response;
+      }
+      
+    });
+
+  </script>
+
+</polymer-element>

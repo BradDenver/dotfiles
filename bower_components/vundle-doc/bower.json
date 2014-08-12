@@ -1,0 +1,21 @@
+{
+  "name": "vundle-doc",
+  "version": "0.0.1",
+  "authors": ["Brad Denver"],
+  "keywords": ["GitHub", "Polymer", "vim", "Vundle", "web-components"],
+  "license": "MIT",
+  "homepage": "http://braddenver.github.io/vundle-doc",
+  "main": "vundle-doc.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.3.5",
+    "core-ajax": "Polymer/core-ajax#~0.3.5",
+    "core-animated-pages": "Polymer/core-animated-pages#~0.3.5",
+    "core-toolbar": "Polymer/core-toolbar#~0.3.5",
+    "core-icon": "Polymer/core-icon#~0.3.5",
+    "core-icon-button": "Polymer/core-icon-button#~0.3.5",
+    "core-icons": "Polymer/core-icons#~0.3.5",
+    "paper-shadow": "Polymer/paper-shadow#~0.3.5",
+    "paper-fab": "Polymer/paper-fab#~0.3.5",
+    "github-readme": "~0.0.3"
+  }
+}

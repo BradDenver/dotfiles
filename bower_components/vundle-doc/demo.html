@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>vundle-doc Demo</title>
+
+  <script src="../platform/platform.js"></script>
+  <link rel="import" href="../polymer/polymer.html">
+  <link rel="import" href="../paper-input/paper-input.html">
+  <link rel="import" href="vundle-doc.html">
+
+</head>
+<body unresolved fullbleed vertical layout>
+
+  <polymer-element name="vundle-doc-demo">
+
+    <template>
+      <div style="padding: 0.5em">
+        <paper-input label="GitHub User" value="{{user}}" floatingLabel></paper-input>
+        <paper-input label="GitHub Repo" value="{{repo}}" floatingLabel></paper-input>
+        <paper-input label=".vimrc Path" value="{{vimrc}}" floatingLabel></paper-input>
+      </div>
+    
+      <vundle-doc user="{{user}}" repo="{{repo}}" vimrcPath="{{vimrc}}" style="height: 100%"></vundle-doc>
+    </template>
+    <script>
+      Polymer('vundle-doc-demo', {
+        ready: function() {
+          this.user = (this.getURLParameter('user')!=='null') ? this.getURLParameter('user') :  'BradDenver';
+          this.repo = (this.getURLParameter('repo')!=='null') ? this.getURLParameter('repo') :  'dotfiles';
+          this.vimrc = (this.getURLParameter('vimrc')!=='null') ? this.getURLParameter('vimrc') :  '.vimrc';
+        },
+        getURLParameter: function (name) {
+          return decodeURI(
+            (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+          );
+        }
+      });
+    </script>
+  </polymer-element>
+  
+  <vundle-doc-demo style="height: 100%;"></vundle-doc-demo>
+
+</body>
+</html>

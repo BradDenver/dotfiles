@@ -1,0 +1,22 @@
+{
+  "name": "dotfiles",
+  "version": "0.0.0",
+  "homepage": "https://github.com/BradDenver/dotfiles",
+  "authors": [
+    "Brad Denver <brad.denver@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "core-component-page": "Polymer/core-component-page#>=0.3.0 <1.0.0",
+    "polymer": "Polymer/polymer#~0.3.5",
+    "vundle-doc": "~0.0.1"
+  }
+}

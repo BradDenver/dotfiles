@@ -1,0 +1,219 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-ajax/core-ajax.html">
+<link rel="import" href="../core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../core-toolbar/core-toolbar.html">
+<link rel="import" href="../core-icon/core-icon.html">
+<link rel="import" href="../core-icon-button/core-icon-button.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../paper-shadow/paper-shadow.html">
+<link rel="import" href="../paper-fab/paper-fab.html">
+<link rel="import" href="../github-readme/github-readme.html">
+
+<!--
+An element providing an easy way to browse the plugins managed by Vundle in your .vimrc and their readme documentation. The element reads your .vimrc from the nominated GitHub repository. It supports both the old "Bundle" and the current "Plugin" Vundle syntax.
+
+##### Example
+
+    <vundle-doc user="BradDenver" repo="dotfiles"></vundle-doc>
+
+@element vundle-doc
+@blurb An element providing an easy way to browse the plugins managed by Vundle in your .vimrc and their readme documentation.
+@homepage http://BradDenver.github.io/vundle-doc
+-->
+<polymer-element name="vundle-doc" attributes="user repo vimrcPath" flex vertical layout>
+
+  <template>
+
+    <link rel="stylesheet" href="vundle-doc.css" />
+
+    <content></content>
+
+    <core-ajax id="ajaxer" 
+      auto
+      headers='{"Accept": "application/vnd.github.VERSION.raw"}' 
+      url="https://api.github.com/repos/{{user}}/{{repo}}/contents/{{vimrcPath}}" 
+      on-core-response="{{ajaxResponseHandler}}"></core-ajax>
+    <!-- <core&#45;ajax id="ajaxer" url="demo.vimrc" on&#45;core&#45;response="{{ajaxResponseHandler}}"></core&#45;ajax> -->
+
+    <core-toolbar>
+      <span>Vundle Doc <small>for {{user}}/{{repo}}/{{vimrcPath}}</small></span>
+    </core-toolbar>
+
+    <core-animated-pages id="pages" selected="{{page}}" transitions="hero-transition cross-fade"  flex>
+    
+      <div center center-justified layout horizontal on-tap="{{transition}}">
+          <div class="card"  layout vertical  cross-fade>
+            <paper-shadow z="1"></paper-shadow>
+            
+            <div hero hero-id="{{selectedBundle.label}}item" class="primary card-head" layout horizontal>
+              <h3 flex><core-icon-button icon="arrow-back"></core-icon-button>{{selectedBundle.label}}</h3>
+              <core-icon icon="{{selectedBundle.icon}}" src="{{selectedBundle.iconSrcLight}}"></core-icon>
+              <a href="{{selectedBundle.url}}" on-tap="{{killEvent}}">
+                <paper-fab icon="arrow-forward"></paper-fab>
+              </a>
+            </div>
+            <div class="readmeContainer" flex on-tap="{{killEvent}}">
+              <github-readme auto user="{{selectedBundle.user}}" repo="{{selectedBundle.repo}}"></github-readme>
+            </div>
+          </div>
+      </div>
+      
+      <div layout horizontal wrap style="overflow: auto;">
+        <template id="bundleList">
+          <ul class="bundleList"  on-tap="{{transition}}"> 
+            <li>
+              <p class="listHeader">{{list.label}}</p>
+            </li>
+            <template repeat="{{list.items as bundle}}">
+              <li layout horizontal hero hero-id="{{bundle.label}}item">
+                <core-icon icon="{{bundle.icon}}" src="{{bundle.iconSrc}}" class="listIcon"></core-icon>
+                <h3 flex>
+                  {{ bundle.type=='github' ? bundle.repo : bundle.label }}
+                  <small class="muted" hidden?={{bundle.type!='github'}}>by {{bundle.user}}</small>
+                </h3>
+                <a href="{{bundle.url}}" class="accent" on-tap="{{killEvent}}" layout horizontal hidden?={{bundle.type!='github'}}>
+                  <paper-icon-button icon="link" flex self-center></paper-icon-button>
+                </a>
+              </li>
+            </template>
+          </ul>
+        </template>
+        <template ref="bundleList" bind="{{bundles as list}}"></template>
+        <template ref="bundleList" bind="{{inactiveBundles as list}}"></template>
+      </div>
+
+    </core-animated-pages>
+
+
+  </template>
+
+  <script>
+
+    Polymer('vundle-doc', {
+      /**
+       * The GitHub username your dotfiles are stored under.
+       *
+       * @attribute user
+       * @type string
+       */
+       user: '',
+
+      /**
+       * The name of the GitHub repository your dotfiles are stored under.
+       *
+       * @attribute repo
+       * @type string
+       */
+      repo: '',
+
+      /**
+       * The path to your .vimrc file within your dot files repo.
+       * Defaults to '.vimrc'
+       *
+       * @attribute vimrcPath
+       * @type string
+       * @default '.vimrc'
+       */
+      vimrcPath: '.vimrc',
+
+      ready: function() {
+        // pull in the .vimrc file via the GitHUb api
+        this.$.ajaxer.go();
+      },
+
+      // parse the .vimrc file
+      ajaxResponseHandler: function(e) {
+        this.responseBody = e.detail.response;
+        var lines = this.responseBody.split("\n");
+        var bundles = [];
+        var inactiveBundles = [];
+        for(i = 0; i <lines.length; i++) {
+          if(matches = lines[i].match(/^\s*(bundle|plugin)\s+'(.*)'/i)) {
+            var b = this.parseBundle(matches[2]);
+            b.active = true;
+            bundles.push(b);
+          }
+          if(matches = lines[i].match(/^\s*"\s*bundle\s+'(.+\/.+)'/i)) {
+            var b = this.parseBundle(matches[1]);
+            b.active = false;
+            inactiveBundles.push(b);
+          }
+        }
+        this.bundles = {
+          label: 'Active Plugins',
+          items: bundles
+        };
+        this.inactiveBundles = {
+          label: 'Inactive Plugins',
+          items: inactiveBundles
+        };
+      },
+
+      // parse an individual bundle/plugin
+      parseBundle: function(bundle) {
+        var bundleObj;
+
+        if(bundle.substr(0,6)=='git://'){
+          // repo
+          bundleObj = {
+            label: bundle,
+            type: 'repo',
+            icon: 'cloud'
+          };
+        } else if(bundle.substr(0,7)=='file://') {
+        // file
+          bundleObj = {
+            label: bundle.substr(7),
+            type: 'file',
+            icon: 'folder'
+          };
+        } else {
+          // github
+
+          // fix a common issue
+          if(/^gmarik\/vundle$/i.test(bundle)) {
+            bundle = 'gmarik/vundle.vim';
+          }
+
+          bundleObj = {
+            label: bundle,
+            type: 'github',
+            iconSrc: 'GitHub-Mark-32px.png',
+            iconSrcLight: 'GitHub-Mark-Light-32px.png'
+          };
+          if(matches = bundle.match(/(.*)(\/+)(.*)/)) {
+            bundleObj.user = matches[1];
+            bundleObj.repo = matches[3];
+          } else {
+            bundleObj.user = 'vim-scripts';
+            bundleObj.repo = bundle;
+          }
+          bundleObj.url = 'https://github.com/'+bundleObj.user+'/'+bundleObj.repo;
+        }
+
+        return bundleObj;
+      },
+
+      page: 1,
+      selectedBundle: null,
+
+      // switch between list (1) and card (0) views
+      transition: function(e) { 
+        if(this.page === 1 && e.target.templateInstance.model.bundle && e.target.templateInstance.model.bundle.type=='github') {
+          this.selectedBundle = e.target.templateInstance.model.bundle;
+          this.page = 0;
+          } else {
+          this.page = 1;
+        }
+      },
+
+      // stop propagation of click/tap events on certain elements to prevent unwanted transitions
+      killEvent: function(e) {
+        e.stopPropagation();
+      }
+      
+    });
+
+  </script>
+
+</polymer-element>

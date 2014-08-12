@@ -1,0 +1,113 @@
+:host {
+  font-family: 'Roboto 2', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  bottom: auto;
+  color: #444;
+}
+
+.card {
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+.@media (max-width: 699px) {
+  .card {
+    width: 100%;
+    border-radius: 0px;
+  }
+}
+@media (min-width: 700px) {
+  .card {
+    width: 80%;
+    top: -50px;
+    border-radius: 2px;
+  }
+}
+
+.card-head {
+  padding: 1em;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+@media (max-width: 699px) {
+  .card-head {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+  }
+}
+@media (min-width: 700px) {
+  .card-head {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+  }
+}
+
+.card-head a {
+  color: #fff;
+}
+
+.card-head paper-fab {
+  top: 84px;
+  right: 28px;
+  position: absolute;
+  background-color: #FF4081;
+}
+@media (min-width: 700px) {
+  .card-head paper-fab {
+    top: auto;
+    right: -28px;
+  }
+}
+
+.card-head core-icon {
+  margin-right: 28px;
+  margin-top: 0.83em;
+}
+
+.card-head core-icon-button {
+  fill: white;
+}
+
+.readmeContainer {
+  background-color: white;
+  overflow: auto;
+  padding: 1em;
+}
+
+.primary {
+  background-color: #3F51B5; 
+  color: white;
+}
+
+.bundleList {
+  list-style-type: none;
+  padding-right: 40px;
+  width: 100%;
+  box-sizing: border-box;
+}
+@media (min-width: 700px) {
+  .bundleList {
+    width: 50%;
+  }
+}
+
+.bundleList li:first-of-type {
+  border-bottom: 1px solid #ddd;
+}
+
+.listHeader {
+  margin-left: 16px;
+  color: hsla(0, 0%, 0%, 0.54);
+}
+
+.listIcon {
+  margin: 1em;
+  color: #3f51b5;
+}
+
+.muted {
+  color: hsla(0, 0%, 0%, 0.54);
+}
+
+.accent {
+  color: #FF4081;
+}

@@ -80,6 +80,7 @@ set wildmenu
 set incsearch
 set autoread
 set gdefault " always use g flag in s///
+set completeopt-=preview "prevent scratch window
 
 " Gutter
 set number
@@ -132,3 +133,8 @@ set noerrorbells
 
 nnoremap j gj
 nnoremap k gk
+
+" http://vim.wikia.com/wiki/VimTip906
+nnoremap <leader>pm :set invpaste paste?<CR>
+set pastetoggle=<leader>pm
+set showmode
